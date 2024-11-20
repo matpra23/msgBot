@@ -26,8 +26,10 @@ client.on('messageCreate', (message) => {       //Przywitanie
         return;
     }
     let num = getRandomInt(5);
+    const greeting = message.content.toLowerCase();
+
     for(let i = 0; i < greetings.length; i++){
-        if(message.content === greetings[i]){
+        if(greeting === greetings[i]){
             switch(num){
                 case 0: 
                     message.reply(`Hello, ${message.author.username}`);
@@ -36,7 +38,7 @@ client.on('messageCreate', (message) => {       //Przywitanie
                     message.reply(`Hi, ${message.author.username}`);
                     break;
                 case 2:
-                    message.reply(`Hello sir ${message.author.username}!`);
+                    message.reply(`Hello sir, ${message.author.username}!`);
                     break;
                 case 3: 
                     message.reply("Hellow");
@@ -56,9 +58,10 @@ client.on('messageCreate', (message) => {       //Kickowanie uzytkownika gdy nap
         return;
     }
     const userToKick = message.author;
+    const bannedword = message.content.toLowerCase();
 
     for(let i = 0; i < bannedWords.length; i++){
-        if(message.content.includes(bannedWords[i])){
+        if(bannedword.includes(bannedWords[i])){
             try{
                 if (!message.guild.members.me.permissions.has('KickMembers')) {
                     console.log('Bot nie ma uprawnień do wyrzucania użytkowników!');
