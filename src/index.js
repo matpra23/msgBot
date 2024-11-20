@@ -72,7 +72,7 @@ client.on('messageCreate', (message) => {       //Kickowanie uzytkownika gdy nap
                 console.log(`Uzytkownik ${userToKick} zostal wyrzucony z serwera.\npowod: uzycie zakazanej frazy "${bannedWords[i]}"`);
     
                 message.channel.send(`${userToKick.tag} został wyrzucony z serwera za użycie zakazanej frazy.`);
-                message.delete(); //Usuniecie wiadomosci przez ktora uzytkownik zostal wyrzucony z serwera
+                message.delete();
             }catch(error){
                 console.error(`Blad podczas banowania uzytkownika: "${userToKick}"`);
             }
