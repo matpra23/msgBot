@@ -51,7 +51,7 @@ client.on('messageCreate', (message) => {       //Przywitanie
 });
 
 const bannedWords = [       //Tablica niedozwolonych fraz
-    ""
+    "test"
 ];
 
 client.on('messageCreate', (message) => {       //Kickowanie uzytkownika gdy napisze niedozwolona fraze
