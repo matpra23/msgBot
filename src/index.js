@@ -19,7 +19,7 @@ function getRandomInt(max) {        //Losowa liczba na powitanie
     return Math.floor(Math.random() * max);
 }
 
-const greetings = ["Hello", "Hi"];      //Tablica przywitan
+const greetings = ["Hello", "Hi", "sup"];      //Tablica przywitan
 
 client.on('messageCreate', (message) => {       //Przywitanie
     if(message.author.bot){
@@ -79,5 +79,6 @@ client.on('messageCreate', (message) => {       //Kickowanie uzytkownika gdy nap
         }
     }
 })
+
 
 client.login(process.env.DISCORD_TOKEN);        //Logowanie poprzez token
