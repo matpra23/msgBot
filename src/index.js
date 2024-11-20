@@ -1,4 +1,6 @@
+
 require('dotenv').config();
+const {bannedWords, greetings} = require('./lists')
 
 const { Client, IntentsBitField } = require('discord.js');
 
@@ -19,8 +21,6 @@ function getRandomInt(max) {        //Losowa liczba na powitanie
     return Math.floor(Math.random() * max);
 }
 
-const greetings = ["Hello", "Hi", "sup"];      //Tablica przywitan
-
 client.on('messageCreate', (message) => {       //Przywitanie
     if(message.author.bot){
         return;
@@ -30,13 +30,13 @@ client.on('messageCreate', (message) => {       //Przywitanie
         if(message.content === greetings[i]){
             switch(num){
                 case 0: 
-                    message.reply("Hello");
+                    message.reply(`Hello, @${message.author.username}`);
                     break;
                 case 1: 
-                    message.reply("Hi!");
+                    message.reply(`Hi, @${message.author.username}`);
                     break;
                 case 2:
-                    message.reply("Hello sir!");
+                    message.reply(`Hello sir ${message.author.username}!`);
                     break;
                 case 3: 
                     message.reply("Hellow");
@@ -50,10 +50,6 @@ client.on('messageCreate', (message) => {       //Przywitanie
         }
     }
 });
-
-const bannedWords = [       //Tablica niedozwolonych fraz
-    "test"
-];
 
 client.on('messageCreate', (message) => {       //Kickowanie uzytkownika gdy napisze niedozwolona fraze
     if(message.author.bot){
