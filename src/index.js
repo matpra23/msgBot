@@ -52,7 +52,7 @@ client.on('messageCreate', (message) => {       //Przywitanie
 });
 
 const bannedWords = [       //Tablica niedozwolonych fraz
-    "nigga", "nigger", "czarnuch", "rape", "lewice", "lewica", "lewak"
+    "test"
 ];
 
 client.on('messageCreate', (message) => {       //Kickowanie uzytkownika gdy napisze niedozwolona fraze
