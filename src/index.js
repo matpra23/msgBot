@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 const { Client, IntentsBitField } = require('discord.js');
 
 const client = new Client({
@@ -71,11 +72,13 @@ client.on('messageCreate', (message) => {       //Kickowanie uzytkownika gdy nap
                 console.log(`Uzytkownik ${userToKick} zostal wyrzucony z serwera.\npowod: uzycie zakazanej frazy "${bannedWords[i]}"`);
     
                 message.channel.send(`${userToKick.tag} został wyrzucony z serwera za użycie zakazanej frazy.`);
+                message.delete(); //Usuniecie wiadomosci przez ktora uzytkownik zostal wyrzucony z serwera
             }catch(error){
                 console.error(`Blad podczas banowania uzytkownika: "${userToKick}"`);
             }
         }
     }
 })
+
 
 client.login(process.env.DISCORD_TOKEN);        //Logowanie poprzez token
