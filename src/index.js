@@ -1,6 +1,8 @@
-
 require('dotenv').config();
-const {bannedWords, greetings} = require('./lists')
+
+const {
+    greetings, bannedWords, funnyEmojiReactionList, glassesEmojiReactionList
+} = require('./lists')
 
 const { Client, IntentsBitField } = require('discord.js');
 
@@ -13,23 +15,27 @@ const client = new Client({
     ]
 });
 
-client.on('ready', (c) => {         //Informacja o poprawnym dzialaniu bota
-    console.log(`${c.user.username} is online and up to date`);
+//Informacja o poprawnym dzialaniu bota
+client.on('ready', (c) => {
+    console.log(`\n${c.user.username} is online and up to date.\n`);
 });
 
-function getRandomInt(max) {        //Losowa liczba na powitanie
+//Losowa wiadomosc powitalna
+function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
-client.on('messageCreate', (message) => {       //Przywitanie
+client.on('messageCreate', (message) => {
     if(message.author.bot){
         return;
     }
-    let num = getRandomInt(5);
-    const greeting = message.content.toLowerCase();
+    const num = getRandomInt(5);
+    const msg = message.content.toLowerCase();
+    const user = message.author;
 
+    //Przywitanie sie z uzytkownikiem za pomoca losowej frazy
     for(let i = 0; i < greetings.length; i++){
-        if(greeting === greetings[i]){
+        if(msg === greetings[i]){
             switch(num){
                 case 0: 
                     message.reply(`Hello, ${message.author.username}`);
@@ -43,41 +49,64 @@ client.on('messageCreate', (message) => {       //Przywitanie
                 case 3: 
                     message.reply("Hellow");
                     break;
-                case 4:
-                    message.reply("Yoooooo!");
-                    break;
                 default:
                     break;
             }
         }
     }
-});
 
-client.on('messageCreate', (message) => {       //Kickowanie uzytkownika gdy napisze niedozwolona fraze
-    if(message.author.bot){
-        return;
-    }
-    const userToKick = message.author;
-    const bannedword = message.content.toLowerCase();
-
+    //Kickowanie uzytkownika gdy napisze niedozwolona fraze
     for(let i = 0; i < bannedWords.length; i++){
-        if(bannedword.includes(bannedWords[i])){
+        if(msg.includes(bannedWords[i])){
             try{
                 if (!message.guild.members.me.permissions.has('KickMembers')) {
-                    console.log('Bot nie ma uprawnień do wyrzucania użytkowników!');
+                    console.log('Bot nie ma uprawnień do wyrzucania użytkowników!\n');
                     return;
                 }
-                message.guild.members.kick(userToKick, {reason: `Uzycie zakazanej frazy: "${bannedWords[i]}"`});
-                console.log(`Uzytkownik ${userToKick} zostal wyrzucony z serwera.\npowod: uzycie zakazanej frazy "${bannedWords[i]}"`);
+                message.guild.members.kick(user, {reason: `Uzycie zakazanej frazy: "${bannedWords[i]}"`});
+                console.log(`Uzytkownik ${user} zostal wyrzucony z serwera.\nPowod: uzycie zakazanej frazy "${bannedWords[i]}".\n`);
     
-                message.channel.send(`${userToKick.tag} został wyrzucony z serwera za użycie zakazanej frazy.`);
+                message.channel.send(`${user.tag} został wyrzucony z serwera za użycie zakazanej frazy.`);
                 message.delete();
             }catch(error){
-                console.error(`Blad podczas banowania uzytkownika: "${userToKick}"`);
+                console.error(`Blad podczas banowania uzytkownika: "${user}"\n`);
             }
         }
     }
-})
+    
+});
 
+//Reagowanie na wiadmosc za pomoca emotek, ktora zawiera konkretna faze
+client.on('messageCreate', (message) => {
+    if(message.author.bot){
+        return;
+    }
+    const temp = message.content.toLowerCase();
 
-client.login(process.env.DISCORD_TOKEN);        //Logowanie poprzez token
+    //😅
+    for(let i = 0; i < funnyEmojiReactionList.length; i++){
+        if(temp.includes(funnyEmojiReactionList[i])){
+            try{
+                message.react('😅');
+                console.log(`Dodano reakcje "${'😅'}" do wiadomosci "${temp}".\n`);
+            }catch(error){
+                console.error(`Blad podczas reagowania na wiadomosc.\n`);
+            }
+        }
+    }
+
+    //😎
+    for(let i = 0; i < glassesEmojiReactionList.length; i++){
+        if(temp.includes(glassesEmojiReactionList[i])){
+            try{
+                message.react('😎');
+                console.log(`Dodano reakcje "${'😎'}" do wiadomosci "${temp}".\n`);
+            }catch(error){
+                console.error(`Blad podczas reagowania na wiadomosc.\n`);
+            }
+        }
+    }
+});
+
+//Logowanie poprzez token
+client.login(process.env.DISCORD_TOKEN);
