@@ -30,10 +30,10 @@ client.on('messageCreate', (message) => {       //Przywitanie
         if(message.content === greetings[i]){
             switch(num){
                 case 0: 
-                    message.reply(`Hello, @${message.author.username}`);
+                    message.reply(`Hello, ${message.author.username}`);
                     break;
                 case 1: 
-                    message.reply(`Hi, @${message.author.username}`);
+                    message.reply(`Hi, ${message.author.username}`);
                     break;
                 case 2:
                     message.reply(`Hello sir ${message.author.username}!`);
