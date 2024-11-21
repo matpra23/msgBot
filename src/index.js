@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const {
-    greetings, bannedWords, funnyEmojiReactionList, glassesEmojiReactionList
+    greetings, bannedWords, funnyEmojiReactionList, glassesEmojiReactionList, obraza
 } = require('./lists')
 
 const { Client, IntentsBitField } = require('discord.js');
@@ -82,6 +82,15 @@ client.on('messageCreate', (message) => {
         return;
     }
     const temp = message.content.toLowerCase();
+
+    if(message.author.username === "evined" && message.channel.name === "welcome"){
+        try{
+            message.react('🫡');
+            console.log(`Dodano reakcje "${'🫡'}" do wiadomosci szefa "${temp}" na kanale "${message.channel.name}".\n`);
+        }catch(error){
+            console.error(`Blad podczas reagowania na wiadomosc.\n`);
+        }
+    }
 
     //😅
     for(let i = 0; i < funnyEmojiReactionList.length; i++){
