@@ -15,14 +15,14 @@ const client = new Client({
     ]
 });
 
-//Bot ready
+    //Bot ready
 client.on('ready', (c) => {
     console.log(
         `\n${c.user.username} is online and up to date.\n`
         );
 });
 
-//Random welcome message
+    //Random welcome message
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
@@ -143,7 +143,7 @@ client.on('messageCreate', (message) => {
     if(message.author.bot){
         return;
     }
-    
+
     if(!logChannel){
         return;
     }
@@ -191,8 +191,5 @@ client.on('messageDelete', (message) =>{
     );
 });
 
-
-
-//Login via token
+    //Login via token
 client.login(process.env.DISCORD_TOKEN);
-

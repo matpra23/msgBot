@@ -1,3 +1,8 @@
+# BOT LOGIN TOKEN
 .env
+
+#MODULES
 node_modules/*
+
+#
 src/lists.js
