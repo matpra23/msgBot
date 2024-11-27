@@ -134,7 +134,6 @@ client.on('messageCreate', (message) => {
     }
     
 });
-
     //Message sent
 client.on('messageCreate', (message) => {
     const msg = message.content.toLowerCase();
@@ -196,3 +195,4 @@ client.on('messageDelete', (message) =>{
 
 //Login via token
 client.login(process.env.DISCORD_TOKEN);
+
