@@ -30,9 +30,7 @@ function getRandomInt(max) {
 }
 
 client.on('messageCreate', (message) => {
-    if(message.author.bot){
-        return;
-    }
+    if(message.author.bot) return;
     const num = getRandomInt(5);
     const msg = message.content.toLowerCase();
     const user = message.author;
@@ -134,21 +132,14 @@ client.on('messageCreate', (message) => {
             }
         }
     }
-    
 });
     //Message sent
 client.on('messageCreate', (message) => {
     const msg = message.content.toLowerCase();
     const user = message.author;
     const logChannel = message.guild.channels.cache.find(channel => channel.name === "message-logs");
-
-    if(message.author.bot){
-        return;
-    }
-
-    if(!logChannel){
-        return;
-    }
+    if(message.author.bot) return;
+    if(!logChannel) return;
     logChannel.send(
         `${time} : **${user.tag}** SENT a message to ( **#${message.channel.name}** ) that contains:\n "${msg}"`
     );
@@ -157,13 +148,8 @@ client.on('messageCreate', (message) => {
     //Message edit
 client.on('messageUpdate', async (oldMessage, newMessage) => {
     const logChannel = oldMessage.guild.channels.cache.find(ch => ch.name === "message-logs");
-    if (oldMessage.author.bot || newMessage.author.bot){
-        return;
-    }
-
-    if (!logChannel) {
-        return;
-    }
+    if (oldMessage.author.bot || newMessage.author.bot) return;
+    if (!logChannel) return;
     logChannel.send(
         `${time} : **${oldMessage.author.tag}** EDITED a message on **#${oldMessage.channel.name}**:
         **Before:** 
@@ -180,14 +166,12 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
     //Message delete log
 client.on('messageDelete', (message) =>{
     const logChannel = message.guild.channels.cache.find(channel => channel.name === "message-logs");
-    if(message.author.bot){
-        return;
-    }
+    if(message.author.bot) return;
+    
     const msg = message.content;
     const user = message.author;
-    if(!logChannel){
-        return;
-    }
+    if(!logChannel) return;
+    
     logChannel.send(
         `${time} : **${user.tag}** DELETED a message on ( **#${message.channel.name}** ) which contained:\n "${msg}"`
     );
@@ -197,25 +181,16 @@ client.on('messageDelete', (message) =>{
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
 
-    // Sprawdzamy, czy wiadomość zawiera komendę !clear
+    // Check if message contains !clear
     if (message.content === '!clear') {
-        
-        if (!message.member.permissions.has('Administrator')) {
-            return message.reply('⛔ Insufficient permissions to use this message.');
-        }
-
-        if (!message.channel.isTextBased()) {
-            return message.reply('⛔ This command works only on text channels.');
-        }
-
+        if (!message.member.permissions.has('Administrator')) return message.reply('⛔ Insufficient permissions to use this message.');
+        if (!message.channel.isTextBased()) return message.reply('⛔ This command works only on text channels.');
         try {
-            const fetchedMessages = await message.channel.messages.fetch(); // Pobranie wiadomości
-            await message.channel.bulkDelete(fetchedMessages, true); // Usuwamy wiadomości
-
-            // Wysyłamy potwierdzenie
+            const fetchedMessages = await message.channel.messages.fetch();
+            await message.channel.bulkDelete(fetchedMessages, true);
             const confirmationMessage = await message.channel.send('✅ Cleared text chat!');
-            console.log(`[${message.author.username}] used [${message.content}] and cleared the text channel`);
-            setTimeout(() => confirmationMessage.delete(), 5000); // Usuń wiadomość po 5 sekundach
+            console.log(`[${message.author.username}] uzyl komendy [${message.content}], kanal tekstowy zostal wczyszczony `);
+            setTimeout(() => confirmationMessage.delete(), 5000); 
         } catch (error) {
             console.error('Błąd podczas usuwania wiadomości:', error);
             message.reply('❌ An error occurred while using this command');
