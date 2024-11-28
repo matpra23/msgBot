@@ -6,6 +6,8 @@ const {
 
 const { Client, IntentsBitField } = require('discord.js');
 
+const time = new Date().toLocaleString();
+
 const client = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,
@@ -148,7 +150,7 @@ client.on('messageCreate', (message) => {
         return;
     }
     logChannel.send(
-        `**${user.tag}** SENT a message to ( **#${message.channel.name}** ) that contains:\n "${msg}"`
+        `${time} : **${user.tag}** SENT a message to ( **#${message.channel.name}** ) that contains:\n "${msg}"`
     );
 })
 
@@ -163,7 +165,7 @@ client.on('messageUpdate', async (oldMessage, newMessage) => {
         return;
     }
     logChannel.send(
-        `**${oldMessage.author.tag}** EDITED a message on **#${oldMessage.channel.name}**:
+        `${time} : **${oldMessage.author.tag}** EDITED a message on **#${oldMessage.channel.name}**:
         **Before:** 
         \`
         ${oldMessage.content}
@@ -187,8 +189,38 @@ client.on('messageDelete', (message) =>{
         return;
     }
     logChannel.send(
-        `**${user.tag}** DELETED a message on ( **#${message.channel.name}** ) which contained:\n "${msg}"`
+        `${time} : **${user.tag}** DELETED a message on ( **#${message.channel.name}** ) which contained:\n "${msg}"`
     );
+});
+
+    // !clear command
+client.on('messageCreate', async (message) => {
+    if (message.author.bot) return;
+
+    // Sprawdzamy, czy wiadomość zawiera komendę !clear
+    if (message.content === '!clear') {
+        
+        if (!message.member.permissions.has('Administrator')) {
+            return message.reply('⛔ Nie masz uprawnień do usuwania wiadomości.');
+        }
+
+        if (!message.channel.isTextBased()) {
+            return message.reply('⛔ Ta komenda działa tylko na kanałach tekstowych.');
+        }
+
+        try {
+            const fetchedMessages = await message.channel.messages.fetch(); // Pobranie wiadomości
+            await message.channel.bulkDelete(fetchedMessages, true); // Usuwamy wiadomości
+
+            // Wysyłamy potwierdzenie
+            const confirmationMessage = await message.channel.send('✅ Wszystkie wiadomości zostały usunięte!');
+            console.log(`${message.author} used a command ${message.content} and cleared the text channel`);
+            setTimeout(() => confirmationMessage.delete(), 5000); // Usuń wiadomość po 5 sekundach
+        } catch (error) {
+            console.error('Błąd podczas usuwania wiadomości:', error);
+            message.reply('❌ Wystąpił problem z usuwaniem wiadomości.');
+        }
+    }
 });
 
     //Login via token
