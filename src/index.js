@@ -20,7 +20,7 @@ const client = new Client({
     //Bot ready
 client.on('ready', (c) => {
     console.log(
-        `\n${c.user.username} is online and up to date.\n`
+        `\n[${c.user.username}] is online and up to date.\n`
         );
 });
 
@@ -79,15 +79,15 @@ client.on('messageCreate', (message) => {
                 }
                 message.guild.members.kick(user, {reason: `Uzycie zakazanej frazy: "${bannedWords[i]}"`});
                 console.log(
-                    `Uzytkownik ${user} zostal wyrzucony z serwera.\nPowod: uzycie zakazanej frazy "${bannedWords[i]}".\n`
+                    `User ${message.author.username}[${user}] was kicked from the server.\nFor: [${bannedWords[i]}].\n`
                     );
                 message.channel.send(
-                    `${user.tag} został wyrzucony z serwera za użycie zakazanej frazy.`
+                    `${user.tag} got kicked for inappropriate behaviour.`
                     );
                 message.delete();
             }catch(error){
                 console.error(
-                    `Blad podczas banowania uzytkownika: "${user}"\n`
+                    `Blad podczas banowania uzytkownika: [${user}]\n`
                     );
             }
         }
@@ -98,7 +98,7 @@ client.on('messageCreate', (message) => {
         try{
             message.react('🫡');
             console.log(
-                `Dodano reakcje "${'🫡'}" do wiadomosci szefa "${msg}" na kanale "${message.channel.name}".\n`
+                `Dodano reakcje [${'🫡'}] do wiadomosci szefa [${msg}] na kanale [${message.channel.name}].\n`
                 );
         }catch(error){
             console.error(
@@ -111,7 +111,7 @@ client.on('messageCreate', (message) => {
             try{
                 message.react('😅');
                 console.log(
-                    `Dodano reakcje "${'😅'}" do wiadomosci "${msg}".\n`
+                    `Dodano reakcje [${'😅'}] do wiadomosci [${msg}].\n`
                     );
             }catch(error){
                 console.error(
@@ -125,7 +125,7 @@ client.on('messageCreate', (message) => {
             try{
                 message.react('😎');
                 console.log(
-                    `Dodano reakcje "${'😎'}" do wiadomosci "${msg}".\n`
+                    `Dodano reakcje [${'😎'}] do wiadomosci [${msg}].\n`
                     );
             }catch(error){
                 console.error(
@@ -201,11 +201,11 @@ client.on('messageCreate', async (message) => {
     if (message.content === '!clear') {
         
         if (!message.member.permissions.has('Administrator')) {
-            return message.reply('⛔ Nie masz uprawnień do usuwania wiadomości.');
+            return message.reply('⛔ Insufficient permissions to use this message.');
         }
 
         if (!message.channel.isTextBased()) {
-            return message.reply('⛔ Ta komenda działa tylko na kanałach tekstowych.');
+            return message.reply('⛔ This command works only on text channels.');
         }
 
         try {
@@ -213,12 +213,12 @@ client.on('messageCreate', async (message) => {
             await message.channel.bulkDelete(fetchedMessages, true); // Usuwamy wiadomości
 
             // Wysyłamy potwierdzenie
-            const confirmationMessage = await message.channel.send('✅ Wszystkie wiadomości zostały usunięte!');
-            console.log(`${message.author} used a command ${message.content} and cleared the text channel`);
+            const confirmationMessage = await message.channel.send('✅ Cleared text chat!');
+            console.log(`[${message.author.username}] used [${message.content}] and cleared the text channel`);
             setTimeout(() => confirmationMessage.delete(), 5000); // Usuń wiadomość po 5 sekundach
         } catch (error) {
             console.error('Błąd podczas usuwania wiadomości:', error);
-            message.reply('❌ Wystąpił problem z usuwaniem wiadomości.');
+            message.reply('❌ An error occurred while using this command');
         }
     }
 });
